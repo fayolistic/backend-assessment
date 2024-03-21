@@ -4,12 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const MONGODB_URI = "mongodb://localhost:27017/my-database";
-mongoose_1.default.connect(MONGODB_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   useFindAndModify: false,
-});
-const db = mongoose_1.default.connection;
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const MONGODB_URI = process.env.MONGODB_URI;
+console.log(MONGODB_URI);
+const db = mongoose_1.default
+    .connect(MONGODB_URI)
+    .then(() => console.log("MongoDB connected"))
+    .catch((error) => console.error("MongoDB connection error:", error));
 exports.default = db;

@@ -1,15 +1,13 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
-const MONGODB_URI = "mongodb://localhost:27017/my-database";
+const MONGODB_URI = process.env.MONGODB_URI as string;
+console.log(MONGODB_URI);
 
-mongoose.connect(MONGODB_URI, {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  //   useFindAndModify: false,
-});
-
-const db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
+const db = mongoose
+  .connect(MONGODB_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((error) => console.error("MongoDB connection error:", error));
 
 export default db;

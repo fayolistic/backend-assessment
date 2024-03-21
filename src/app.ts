@@ -3,22 +3,22 @@ import express, { Request, Response, NextFunction } from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import db from "./database/db";
 import dotenv from "dotenv";
-dotenv.config();
+import mongoose from "mongoose";
 
 import indexRouter from "./routes/index";
 import usersRouter from "./routes/users";
 
 const app = express();
+dotenv.config();
 
-db.once("open", () => {
-  console.log("MongoDB database connection established successfully");
-});
+const MONGODB_URI = process.env.MONGODB_URI as string;
+console.log(MONGODB_URI);
 
-app.listen(3001, () => {
-  console.log(`Server is running on port ${3001}`);
-});
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((error) => console.error("MongoDB connection error:", error));
 
 // view engine setup
 app.set("views", path.join(__dirname, "..", "views"));

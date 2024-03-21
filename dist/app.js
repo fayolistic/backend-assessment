@@ -8,18 +8,18 @@ const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const morgan_1 = __importDefault(require("morgan"));
-const db_1 = __importDefault(require("./database/db"));
 const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
+const mongoose_1 = __importDefault(require("mongoose"));
 const index_1 = __importDefault(require("./routes/index"));
 const users_1 = __importDefault(require("./routes/users"));
 const app = (0, express_1.default)();
-db_1.default.once("open", () => {
-    console.log("MongoDB database connection established successfully");
-});
-app.listen(3001, () => {
-    console.log(`Server is running on port ${3001}`);
-});
+dotenv_1.default.config();
+const MONGODB_URI = process.env.MONGODB_URI;
+console.log(MONGODB_URI);
+mongoose_1.default
+    .connect(MONGODB_URI)
+    .then(() => console.log("MongoDB connected"))
+    .catch((error) => console.error("MongoDB connection error:", error));
 // view engine setup
 app.set("views", path_1.default.join(__dirname, "..", "views"));
 app.set("view engine", "ejs");
